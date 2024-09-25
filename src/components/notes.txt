@@ -1,0 +1,50 @@
+
+
+Chessboard
+  capturedWhitePieces = array[Pieces]
+  capturedWhitePieces = 
+  whitePieceCount
+  blackPieceCount
+
+  pointsUpWhite = computed()
+  pointsUpBlack = computed()
+  isWhiteLost
+  isBlackLost
+  moveCount
+  
+
+  Square x64
+    coordintate
+    hasPiece?
+    
+
+Square
+  color
+  coordinate
+  id
+  hasPiece
+
+Piece
+  pieceType
+  pieceValue
+  possibleMoves(coordinate, pieceType, moveCount)
+      isCurrentlyChecked?
+      isCheckedSquare?
+      isEnPassant?
+      isBlockedBySelf?
+      isFirstMove?
+      
+      return array[[coordinates]]
+
+Coordinates
+
+Piece interface
+  Pawn implements Piece interface
+  etc...
+
+
+
+
+
+INTERFACES ÄR INTE SAMMA SAK SOM COMPONENTER
+

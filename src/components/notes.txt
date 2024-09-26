@@ -44,7 +44,196 @@ Piece interface
 
 
 
-
-
 INTERFACES ÄR INTE SAMMA SAK SOM COMPONENTER
+
+
+
+
+Ska brädet utformas som en 2D array?
+
+chessboard = [
+  {
+    coordinates,
+    id,
+    currentPiece,
+  }
+]
+
+
+
+
+GENERIC COMPONENTS FOR PIECES? --> 
+
+
+
+
+
+
+För varje ruta öka x med 1 tills var 8:e ruta har nåtts, börja sedan om och öka y med 1 
+
+skapa radId
+skapa columnId
+
+skapa 8 kolumner 
+
+columns[0, 1, 2, 3, 4, 5, 6, 7]
+rows[0, 1, 2, 3, 4, 5, 6, 7]
+
+för var 8:e ruta 
+  skapa ny rad
+
+för varje rad
+  skapa radId (A-H)
+  
+
+  function nextChar(c) {
+    return String.fromCharCode(c.charCodeAt(0) + 1);
+  }
+
+
+för varje column
+  skapa columnId (1-8)
+
+
+
+
+
+Man måste reversa renderingen?
+
+Alla rutor skapas from 0 -> 64 med början på A1 och 0,0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ChessSquare :is-white="true" :square-coordinates="[7, 0]" square-id="h8" />
+    <ChessSquare :is-white="false" :square-coordinates="[7, 1]" square-id="h7" />
+    <ChessSquare :is-white="true" :square-coordinates="[7, 2]" square-id="h6" />
+    <ChessSquare :is-white="false" :square-coordinates="[7, 3]" square-id="h5" />
+    <ChessSquare :is-white="true" :square-coordinates="[7, 4]" square-id="h4" />
+    <ChessSquare :is-white="false" :square-coordinates="[7, 5]" square-id="h3" />
+    <ChessSquare :is-white="true" :square-coordinates="[7, 6]" square-id="h2" />
+    <ChessSquare :is-white="false" :square-coordinates="[7, 7]" square-id="h1" />
+
+    <ChessSquare :is-white="false" :square-coordinates="[6, 0]" square-id="g8" />
+    <ChessSquare :is-white="true" :square-coordinates="[6, 1]" square-id="g7" />
+    <ChessSquare :is-white="false" :square-coordinates="[6, 2]" square-id="g6" />
+    <ChessSquare :is-white="true" :square-coordinates="[6, 3]" square-id="g5" />
+    <ChessSquare :is-white="false" :square-coordinates="[6, 4]" square-id="g4" />
+    <ChessSquare :is-white="true" :square-coordinates="[6, 5]" square-id="g3" />
+    <ChessSquare :is-white="false" :square-coordinates="[6, 6]" square-id="g2" />
+    <ChessSquare :is-white="true" :square-coordinates="[6, 7]" square-id="g1" />
+
+    <ChessSquare :is-white="true" :square-coordinates="[5, 0]" square-id="f8" />
+    <ChessSquare :is-white="false" :square-coordinates="[5, 1]" square-id="f7" />
+    <ChessSquare :is-white="true" :square-coordinates="[5, 2]" square-id="f6" />
+    <ChessSquare :is-white="false" :square-coordinates="[5, 3]" square-id="f5" />
+    <ChessSquare :is-white="true" :square-coordinates="[5, 4]" square-id="f4" />
+    <ChessSquare :is-white="false" :square-coordinates="[5, 5]" square-id="f3" />
+    <ChessSquare :is-white="true" :square-coordinates="[5, 6]" square-id="f2" />
+    <ChessSquare :is-white="false" :square-coordinates="[5, 7]" square-id="f1" />
+
+    <ChessSquare :is-white="false" :square-coordinates="[4, 0]" square-id="e8" />
+    <ChessSquare :is-white="true" :square-coordinates="[4, 1]" square-id="e7" />
+    <ChessSquare :is-white="false" :square-coordinates="[4, 2]" square-id="e6" />
+    <ChessSquare :is-white="true" :square-coordinates="[4, 3]" square-id="e5" />
+    <ChessSquare :is-white="false" :square-coordinates="[4, 4]" square-id="e4" />
+    <ChessSquare :is-white="true" :square-coordinates="[4, 5]" square-id="e3" />
+    <ChessSquare :is-white="false" :square-coordinates="[4, 6]" square-id="e2" />
+    <ChessSquare :is-white="true" :square-coordinates="[4, 7]" square-id="e1" />
+
+    <ChessSquare :is-white="true" :square-coordinates="[3, 0]" square-id="d8" />
+    <ChessSquare :is-white="false" :square-coordinates="[3, 1]" square-id="d7" />
+    <ChessSquare :is-white="true" :square-coordinates="[3, 2]" square-id="d6" />
+    <ChessSquare :is-white="false" :square-coordinates="[3, 3]" square-id="d5" />
+    <ChessSquare :is-white="true" :square-coordinates="[3, 4]" square-id="d4" />
+    <ChessSquare :is-white="false" :square-coordinates="[3, 5]" square-id="d3" />
+    <ChessSquare :is-white="true" :square-coordinates="[3, 6]" square-id="d2" />
+    <ChessSquare :is-white="false" :square-coordinates="[3, 7]" square-id="d1" />
+
+    <ChessSquare :is-white="false" :square-coordinates="[2, 0]" square-id="c8" />
+    <ChessSquare :is-white="true" :square-coordinates="[2, 1]" square-id="c7" />
+    <ChessSquare :is-white="false" :square-coordinates="[2, 2]" square-id="c6" />
+    <ChessSquare :is-white="true" :square-coordinates="[2, 3]" square-id="c5" />
+    <ChessSquare :is-white="false" :square-coordinates="[2, 4]" square-id="c4" />
+    <ChessSquare :is-white="true" :square-coordinates="[2, 5]" square-id="c3" />
+    <ChessSquare :is-white="false" :square-coordinates="[2, 6]" square-id="c2" />
+    <ChessSquare :is-white="true" :square-coordinates="[2, 7]" square-id="c1" />
+
+    <ChessSquare :is-white="true" :square-coordinates="[1, 0]" square-id="b8" />
+    <ChessSquare :is-white="false" :square-coordinates="[1, 1]" square-id="b7" />
+    <ChessSquare :is-white="true" :square-coordinates="[1, 2]" square-id="b6" />
+    <ChessSquare :is-white="false" :square-coordinates="[1, 3]" square-id="b5" />
+    <ChessSquare :is-white="true" :square-coordinates="[1, 4]" square-id="b4" />
+    <ChessSquare :is-white="false" :square-coordinates="[1, 5]" square-id="b3" />
+    <ChessSquare :is-white="true" :square-coordinates="[1, 6]" square-id="b2" />
+    <ChessSquare :is-white="false" :square-coordinates="[1, 7]" square-id="b1" />
+
+    <ChessSquare :is-white="false" :square-coordinates="[0, 0]" square-id="a8" />
+    <ChessSquare :is-white="true" :square-coordinates="[0, 1]" square-id="a7" />
+    <ChessSquare :is-white="false" :square-coordinates="[0, 2]" square-id="a6" />
+    <ChessSquare :is-white="true" :square-coordinates="[0, 3]" square-id="a5" />
+    <ChessSquare :is-white="false" :square-coordinates="[0, 4]" square-id="a4" />
+    <ChessSquare :is-white="true" :square-coordinates="[0, 5]" square-id="a3" />
+    <ChessSquare :is-white="false" :square-coordinates="[0, 6]" square-id="a2" />
+    <ChessSquare :is-white="true" :square-coordinates="[0, 7]" square-id="a1" />
+
+
+    <WhitePawn />
+<WhitePawn />
+<WhiteRook :piece-coordinates="[0, 0]" />
+
+
+
+
+för varje ojämn rad, förskjut index med 1 
+
+eller för var åttende ruta, förskjut index med 1?
+
+let isOnOddRow = false
+
+om i % 8 === 0 {
+  isOnOddRow = true
+}
+
+
+problemet är att den bara räknar den 8:e eller 16:e rutan och inte spannet därefter
+
+medans rutan
+
+
+
+
+man testar den och ändrar den för varje ruta innan den ändrar färgen
+
+efter att den upptäckt en 8-del, låt
+
+för var åttonde index eller var 16:e? 
+  skapa en räknare som räknar de passerade värdena
+
+  så länge passerade värden är <= 8
+    tilldela färg för nästkommande rutor
+
+
+börja om
+
+
 

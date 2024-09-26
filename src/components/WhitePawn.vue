@@ -8,8 +8,7 @@
   import Coordinates from '../types'
 
   interface Props {
-    isWhite?: boolean
-    coordinates: [Coordinates]
+    pieceCoordinates: Coordinates
   }
 
   const props = defineProps<Props>()

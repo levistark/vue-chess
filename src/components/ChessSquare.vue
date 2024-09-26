@@ -1,25 +1,25 @@
 <template>
   <div class="square" :class="{ white: isWhite, black: !isWhite }">
-    <span>{{ props.squareCoordinates }}</span>
-    <slot name="pieceSlot"></slot>
+    <span class="coordinate">{{ props.squareCoordinates }}</span>
+    <span class="id">{{ props.squareId }}</span>
+    <slot></slot>
   </div>
 </template>
 
 <script setup lang="ts">
-  import {defineProps} from 'vue'
-  import {Coordinates, Color} from '../types'
+  import {defineProps, onMounted, ref} from 'vue'
+  import type {Square, Coordinates, Piece} from '../types'
 
-  interface Props {
-    isWhite: boolean
-    squareCoordinates: [Coordinates]
-    squareId: string
-  }
-  const props = defineProps<Props>()
+  const props = defineProps<Square>()
+  const currentPiece = ref<Piece>()
 
+  onMounted(() => {
+    
+  })
 </script>
 
-<style scoped>
 
+<style scoped>
 .square {
   width: 70px;
   height: 70px;
@@ -29,8 +29,15 @@
 
   span {
     position: absolute;
-    top: 5px;
-    left: 5px;
+    font-size: 8pt;
+    color: black;
+    left: 17px;
+  }
+  .coordinate {
+    top: 1px;
+  }
+  .id {
+    bottom: 1px;
   }
 
   svg {

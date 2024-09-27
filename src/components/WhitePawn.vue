@@ -4,15 +4,20 @@
   </svg>
 </template>
 
+
+1. Skapa ref till bild-elementet
+2. Skapa event-listener på refen 
+
 <script setup lang="ts">
-  import Coordinates from '../types'
+import { onMounted } from 'vue';
 
-  interface Props {
-    pieceCoordinates: Coordinates
-  }
+  onMounted(() => {
+    function handleClick(event: Event) {
 
-  const props = defineProps<Props>()
-  
+    }
+
+
+  })
 </script>
 
 <style scoped>

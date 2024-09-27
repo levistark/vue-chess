@@ -1,7 +1,8 @@
 <template>
   <div class="square" :class="{ white: isWhite, black: !isWhite }">
     <span class="coordinate">{{ props.squareCoordinates }}</span>
-    <span class="id">{{ props.squareId }}</span>
+    <span class="rank">{{ props.squareId[0] }}</span>
+    <span class="file">{{ props.squareId[1] }}</span>
     <slot></slot>
   </div>
 </template>
@@ -13,9 +14,6 @@
   const props = defineProps<Square>()
   const currentPiece = ref<Piece>()
 
-  onMounted(() => {
-    
-  })
 </script>
 
 
@@ -23,7 +21,6 @@
 .square {
   width: 70px;
   height: 70px;
-  border: solid 1px white;
   padding: 5px;    
   position: relative;
 
@@ -32,12 +29,23 @@
     font-size: 8pt;
     color: black;
     left: 17px;
+    color: white;
   }
   .coordinate {
     top: 1px;
+    color: black;
+    display: none;
   }
-  .id {
-    bottom: 1px;
+  .rank {
+    top: 35%;
+    left: -50px;
+    z-index: -1;
+  }
+  .file {
+    bottom: -50px;
+    left: 30px;
+    color: white;
+    z-index: -1;
   }
 
   svg {

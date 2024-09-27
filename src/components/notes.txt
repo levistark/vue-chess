@@ -203,37 +203,3 @@ Alla rutor skapas from 0 -> 64 med början på A1 och 0,0
 
 
 
-
-för varje ojämn rad, förskjut index med 1 
-
-eller för var åttende ruta, förskjut index med 1?
-
-let isOnOddRow = false
-
-om i % 8 === 0 {
-  isOnOddRow = true
-}
-
-
-problemet är att den bara räknar den 8:e eller 16:e rutan och inte spannet därefter
-
-medans rutan
-
-
-
-
-man testar den och ändrar den för varje ruta innan den ändrar färgen
-
-efter att den upptäckt en 8-del, låt
-
-för var åttonde index eller var 16:e? 
-  skapa en räknare som räknar de passerade värdena
-
-  så länge passerade värden är <= 8
-    tilldela färg för nästkommande rutor
-
-
-börja om
-
-
-

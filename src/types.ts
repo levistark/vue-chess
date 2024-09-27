@@ -4,11 +4,11 @@ export interface Square {
   isWhite: boolean
   squareCoordinates: Coordinates
   squareId: string
+  currentPiece: Piece
 }
 
 export interface Piece {
-  isWhite?: boolean
-  coordinates: Coordinates 
+  class: string | ''
 }
 
 export interface Pawn extends Piece {

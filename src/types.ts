@@ -1,5 +1,7 @@
 export type Coordinates = [number, number]
 
+export type ChessBoard = string[][]
+
 export interface Square {
   isWhite: boolean
   squareCoordinates: Coordinates

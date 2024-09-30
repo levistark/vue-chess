@@ -223,3 +223,10 @@ piece is selected (clicked)
 
 Låt varje pjäskomponent ha sin specifika logik i sig? T.ex möjliga drag
 
+
+
+--GLOBAL STATE--
+
+whiteToMove
+kingInCheck
+moveCount

@@ -88,13 +88,70 @@ import BlackKing from './BlackKing.vue'
 import BlackRook from './BlackRook.vue'
 import BlackBishop from './BlackBishop.vue'
 import BlackKnight from './BlackKnight.vue'
+import { knightSquares } from './pieceLogic'
 
 const props = defineProps<Piece>()
 
-function showAvailableMoves(pieceClickObject: pieceClickObjectType) {}
+const chessboard = [
+  ['wr', 'wn', 'wb', 'wq', 'wk', 'wb', 'wn', 'wr'],
+  ['wp', 'wp', 'wp', 'wp', 'wp', 'wp', 'wp', 'wp'],
+  ['', '', '', '', '', '', '', ''],
+  ['', '', '', '', '', '', '', ''],
+  ['', '', '', '', '', '', '', ''],
+  ['', '', '', '', '', '', '', ''],
+  ['bp', 'bp', 'bp', 'bp', 'bp', 'bp', 'bp', 'bp'],
+  ['br', 'bn', 'bb', 'bq', 'bk', 'bb', 'bn', 'br'],
+]
+
+function showPossibleMoves(pieceClickObject: pieceClickObjectType) {
+  switch (pieceClickObject.class) {
+    case 'bp': { // Black pawn
+    }
+      break;
+    case 'bk': { // Black king
+    }
+      break;
+    case 'bq': { // Black queen
+    }
+      break;
+    case 'br': { // Black rook
+    }
+      break;
+    case 'bb': { // Black bishop
+    }
+      break;
+    case 'bn': { // Black knight
+      // Få tillbaks alla möjliga drag i koordinater
+      knightSquares({class: pieceClickObject.class, coordinates: pieceClickObject.coordinates}, chessboard)
+
+      // Gör så att alla rutor med dessa koordinater markeras
+
+    }
+      
+      break;
+    case 'wp': { // White pawn
+    }
+      break;
+    case 'wk': { // White king
+    }
+      break;
+    case 'wq': { // White queen
+    }
+      break;
+    case 'wr': { // White rook
+    }
+      break;
+    case 'wb': { // White bishop
+    }
+      break;
+    case 'wn': { // White knight
+    }
+      break;  
+  }
+}
 
 function handlePieceClick(pieceClickObject: pieceClickObjectType) {
-  console.log(pieceClickObject)
+  showPossibleMoves(pieceClickObject)
 }
 
 </script>

@@ -203,3 +203,23 @@ Alla rutor skapas from 0 -> 64 med början på A1 och 0,0
 
 
 
+
+skapa generiska pjäscomponenter?
+
+
+
+Template refs
+
+When a parent gets an instance of this component via template refs, the retrieved instance will be of the shape { a: number, b: number } (refs are automatically unwrapped just like on normal instances).
+
+
+piece is selected (clicked)
+  show available moves
+    if a square within the available moves array is clicked
+      move piece
+    else deselect piece
+
+
+
+Låt varje pjäskomponent ha sin specifika logik i sig? T.ex möjliga drag
+

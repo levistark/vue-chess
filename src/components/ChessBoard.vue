@@ -1,19 +1,8 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, useTemplateRef } from 'vue'
 import type { Square, Coordinates } from '../types'
 import ChessSquare from './ChessSquare.vue'
-import WhitePawn from './WhitePawn.vue'
-import WhiteQueen from './WhiteQueen.vue'
-import WhiteKing from './WhiteKing.vue'
-import WhiteRook from './WhiteRook.vue'
-import WhiteBishop from './WhiteBishop.vue'
-import WhiteKnight from './WhiteKnight.vue'
-import BlackPawn from './BlackPawn.vue'
-import BlackQueen from './BlackQueen.vue'
-import BlackKing from './BlackKing.vue'
-import BlackRook from './BlackRook.vue'
-import BlackBishop from './BlackBishop.vue'
-import BlackKnight from './BlackKnight.vue'
+import ChessPiece from './ChessPiece.vue'
 
 const chessboard = ref<Square[][]>([[]])
 
@@ -27,8 +16,6 @@ const initialBoard = [
   ['bp', 'bp', 'bp', 'bp', 'bp', 'bp', 'bp', 'bp'],
   ['br', 'bn', 'bb', 'bq', 'bk', 'bb', 'bn', 'br'],
 ]
-
-function setInittialPieces() {}
 
 function createSquares(): Square[] {
   const columns = [0, 1, 2, 3, 4, 5, 6, 7]
@@ -96,7 +83,8 @@ function createSquares(): Square[] {
       squareCoordinates: [0, 0],
       squareId: 'A1',
       currentPiece: {
-        class: ''
+        class: '',
+        coordinates: [0,0]
       }
     }
     const ids = getSquareIds()
@@ -141,7 +129,8 @@ function createChessBoard() {
           squareCoordinates: square.squareCoordinates,
           squareId: square.squareId,
           currentPiece: {
-            class: initialBoard[i][j]
+            class: initialBoard[i][j],
+            coordinates: square.squareCoordinates
           }
         }
         
@@ -155,11 +144,13 @@ function createChessBoard() {
   chessboard.value = rotatedMatrix
 }
 
-function addPieces() {}
+const squares = useTemplateRef('squares')
 
 onMounted(() => {
   createChessBoard()
 })
+
+
 </script>
 
 <template>
@@ -172,21 +163,9 @@ onMounted(() => {
         :square-coordinates="square.squareCoordinates"
         :square-id="square.squareId"
         :current-piece="square.currentPiece"
+        ref="squares"
       >
-      <BlackPawn v-if="square.currentPiece.class === 'bp'" />  
-      <BlackKing v-if="square.currentPiece.class === 'bk'"/>
-      <BlackQueen v-if="square.currentPiece.class === 'bq'"/>
-      <BlackKnight v-if="square.currentPiece.class === 'bn'"/>
-      <BlackRook v-if="square.currentPiece.class === 'br'"/> 
-      <BlackBishop v-if="square.currentPiece.class === 'bb'"/>
-
-      <WhitePawn v-if="square.currentPiece.class === 'wp'"/>
-      <WhiteKnight v-if="square.currentPiece.class === 'wn'"/>
-      <WhiteKing v-if="square.currentPiece.class === 'wk'"/>
-      <WhiteQueen v-if="square.currentPiece.class === 'wq'"/>
-      <WhiteRook v-if="square.currentPiece.class === 'wr'"/>
-      <WhiteBishop v-if="square.currentPiece.class === 'wb'"/>
-      
+        <ChessPiece :class="square.currentPiece.class" :coordinates="square.currentPiece.coordinates" />
       </ChessSquare>
     </div>
   </div>

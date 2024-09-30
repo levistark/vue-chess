@@ -1,5 +1,5 @@
 <template>
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45" ref="element" @click="$emit('pieceClicked', pieceClickObject)">
     <g fill="#fff" stroke="#000" stroke-width="1.5" stroke-linejoin="round">
       <path d="M8 12a2 2 0 1 1-4 0 2 2 0 1 1 4 0zM24.5 7.5a2 2 0 1 1-4 0 2 2 0 1 1 4 0zM41 12a2 2 0 1 1-4 0 2 2 0 1 1 4 0zM16 8.5a2 2 0 1 1-4 0 2 2 0 1 1 4 0zM33 9a2 2 0 1 1-4 0 2 2 0 1 1 4 0z"/>
       <path d="M9 26c8.5-1.5 21-1.5 27 0l2-12-7 11V11l-5.5 13.5-3-15-3 15-5.5-14V25L7 14l2 12z" stroke-linecap="butt"/>
@@ -10,7 +10,24 @@
 </template>
 
 <script setup lang="ts">
+import type { Piece, pieceClickObjectType } from '@/types';
+import { useTemplateRef, onMounted } from 'vue';
 
+const props = defineProps<Piece>()
+const element = useTemplateRef('element')
+
+let pieceClickObject: pieceClickObjectType
+
+
+onMounted(() => {
+  if (element.value) {
+    pieceClickObject = {
+      class: props.class,
+      element: element.value,
+      coordinates: props.coordinates
+    }
+  }
+})
 </script>
 
 <style scoped>

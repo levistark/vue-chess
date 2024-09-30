@@ -8,7 +8,8 @@ export interface Square {
 }
 
 export interface Piece {
-  class: string | ''
+  class: string | '',
+  coordinates: Coordinates
 }
 
 export interface Pawn extends Piece {
@@ -34,4 +35,10 @@ export interface King extends Piece {
 export interface Queen extends Piece {
   availableMoves(coordinates: Coordinates): Array<Coordinates> 
   value: number
+}
+
+export type pieceClickObjectType = {
+  class: string
+  element: SVGSVGElement | undefined
+  coordinates: Coordinates
 }

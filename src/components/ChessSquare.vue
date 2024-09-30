@@ -8,11 +8,10 @@
 </template>
 
 <script setup lang="ts">
-  import {defineProps, onMounted, ref} from 'vue'
-  import type {Square, Coordinates, Piece} from '../types'
+  import {defineProps} from 'vue'
+  import type {Square} from '../types'
 
   const props = defineProps<Square>()
-  const currentPiece = ref<Piece>()
 
 </script>
 

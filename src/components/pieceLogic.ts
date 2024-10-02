@@ -1,8 +1,5 @@
-import type { ChessBoard, Coordinates, Piece } from "@/types"
-
-export function movePiece(toCoordinate: Coordinates) {
-
-}
+import type { ChessBoard, Coordinates, Piece } from '@/types'
+export function movePiece(toCoordinate: Coordinates) {}
 
 export function isWhiteToMove(): boolean {
   return false
@@ -12,46 +9,56 @@ export function isKingInCheck(): boolean {
   return false
 }
 
+function trimArray(
+  array: Array<Coordinates>,
+  lowestValue: number,
+  highestValue: number
+): Array<Coordinates> {
+  return array.filter(
+    (c) => c[0] < highestValue && c[0] >= lowestValue && c[1] < highestValue && c[1] >= lowestValue
+  )
+}
 
-
-export function knightSquares(piece: Piece, chessBoard: ChessBoard) : Array<Coordinates> {
-  const possibleSquares: Array<Coordinates> = []    
+export function knightSquares(piece: Piece, chessBoard: ChessBoard): Array<Coordinates> {
+  const possibleSquares: Array<Coordinates> = []
   const whiteToMove = isWhiteToMove()
   const kingInCheck = isKingInCheck()
   const isWhite = piece.class.includes('w')
-  
-  
-  // Check if turn is correct
+
+  // If turn is correct
   if ((whiteToMove && isWhite) || (!whiteToMove && !isWhite)) {
-    console.log('hej')
     const y = piece.coordinates[0]
     const x = piece.coordinates[1]
-    const allSquares: Array<Coordinates> = [[y+2, x+1], [y+2, x-1], [y-2, x-1], [y-2, x+1]]
+    const calculatedCoordinates: Array<Coordinates> = [
+      [y + 2, x + 1],
+      [y + 2, x - 1],
+      [y - 2, x - 1],
+      [y - 2, x + 1],
+      [y + 1, x + 2],
+      [y + 1, x - 2],
+      [y - 1, x + 2],
+      [y - 1, x - 2]
+    ]
+    const limitedCoordinates = trimArray(calculatedCoordinates, 0, 8)
 
     if (kingInCheck) {
       // Check if it is possible to block check with knight
-
     } else {
-      // Check all possible squares
-
-      // Filtrera ut array från chessBoard --DENNA FUNKAR INTE--
-      const squares = chessBoard.filter((row, rowIndex) => row.filter((square, squareIndex) => {
-
-        // Kolla om rutorna innehåller pjäser med samma färg
+      // Add squares if they are not the same color as the players turn
+      // And if it is included in the allSquares array,
+      limitedCoordinates.forEach((c) => {
         if (isWhite) {
-          if (!square.includes('w')) {
-            return square
+          if (!chessBoard[c[0]][c[1]].currentPiece.class.includes('w')) {
+            possibleSquares.push(c)
           }
         } else {
-          if (!square.includes('b')) {
-            return square
+          if (!chessBoard[c[0]][c[1]].currentPiece.class.includes('b')) {
+            possibleSquares.push(c)
           }
         }
-      }))
-
-      console.log(squares)
+      })
     }
   }
-  
+
   return possibleSquares
 }

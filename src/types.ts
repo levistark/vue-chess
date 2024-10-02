@@ -1,6 +1,6 @@
 export type Coordinates = [number, number]
 
-export type ChessBoard = string[][]
+export type ChessBoard = Square[][]
 
 export interface Square {
   isWhite: boolean
@@ -11,7 +11,7 @@ export interface Square {
 
 export interface Piece {
   class: string | '',
-  coordinates: Coordinates
+  coordinates: Coordinates,
 }
 
 export interface Pawn extends Piece {

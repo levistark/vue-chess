@@ -1,159 +1,112 @@
-<template>
-  <BlackPawn
-    v-if="props.class === 'bp'"
-    :class="props.class"
-    :coordinates="props.coordinates"
-    @piece-clicked="handlePieceClick"
-  />
-  <BlackKing
-    v-if="props.class === 'bk'"
-    :class="props.class"
-    :coordinates="props.coordinates"
-    @piece-clicked="handlePieceClick"
-  />
-  <BlackQueen
-    v-if="props.class === 'bq'"
-    :class="props.class"
-    :coordinates="props.coordinates"
-    @piece-clicked="handlePieceClick"
-  />
-  <BlackKnight
-    v-if="props.class === 'bn'"
-    :class="props.class"
-    :coordinates="props.coordinates"
-    @piece-clicked="handlePieceClick"
-  />
-  <BlackRook
-    v-if="props.class === 'br'"
-    :class="props.class"
-    :coordinates="props.coordinates"
-    @piece-clicked="handlePieceClick"
-  />
-  <BlackBishop
-    v-if="props.class === 'bb'"
-    :class="props.class"
-    :coordinates="props.coordinates"
-    @piece-clicked="handlePieceClick"
-  />
-  <WhitePawn
-    v-if="props.class === 'wp'"
-    :class="props.class"
-    :coordinates="props.coordinates"
-    @piece-clicked="handlePieceClick"
-  />
-  <WhiteKnight
-    v-if="props.class === 'wn'"
-    :class="props.class"
-    :coordinates="props.coordinates"
-    @piece-clicked="handlePieceClick"
-  />
-  <WhiteKing
-    v-if="props.class === 'wk'"
-    :class="props.class"
-    :coordinates="props.coordinates"
-    @piece-clicked="handlePieceClick"
-  />
-  <WhiteQueen
-    v-if="props.class === 'wq'"
-    :class="props.class"
-    :coordinates="props.coordinates"
-    @piece-clicked="handlePieceClick"
-  />
-  <WhiteRook
-    v-if="props.class === 'wr'"
-    :class="props.class"
-    :coordinates="props.coordinates"
-    @piece-clicked="handlePieceClick"
-  />
-  <WhiteBishop
-    v-if="props.class === 'wb'"
-    :class="props.class"
-    :coordinates="props.coordinates"
-    @piece-clicked="handlePieceClick"
-  />
-</template>
-
 <script setup lang="ts">
-import type { Coordinates, Piece, pieceClickObjectType } from '@/types'
-import { onMounted, useTemplateRef } from 'vue'
-import WhitePawn from './WhitePawn.vue'
-import WhiteQueen from './WhiteQueen.vue'
-import WhiteKing from './WhiteKing.vue'
-import WhiteRook from './WhiteRook.vue'
-import WhiteBishop from './WhiteBishop.vue'
-import WhiteKnight from './WhiteKnight.vue'
-import BlackPawn from './BlackPawn.vue'
-import BlackQueen from './BlackQueen.vue'
-import BlackKing from './BlackKing.vue'
-import BlackRook from './BlackRook.vue'
-import BlackBishop from './BlackBishop.vue'
-import BlackKnight from './BlackKnight.vue'
+import type { Coordinates, Piece } from '@/types'
+import { toValue } from 'vue'
+import WhitePawn from './Pieces/WhitePawn.vue'
+import WhiteQueen from './Pieces/WhiteQueen.vue'
+import WhiteKing from './Pieces/WhiteKing.vue'
+import WhiteRook from './Pieces/WhiteRook.vue'
+import WhiteBishop from './Pieces/WhiteBishop.vue'
+import WhiteKnight from './Pieces/WhiteKnight.vue'
+import BlackPawn from './Pieces/BlackPawn.vue'
+import BlackQueen from './Pieces/BlackQueen.vue'
+import BlackKing from './Pieces/BlackKing.vue'
+import BlackRook from './Pieces/BlackRook.vue'
+import BlackBishop from './Pieces/BlackBishop.vue'
+import BlackKnight from './Pieces/BlackKnight.vue'
 import { knightSquares } from './pieceLogic'
+import { chessBoard, possibleSquares } from '../stores'
 
 const props = defineProps<Piece>()
 
-const chessboard = [
-  ['wr', 'wn', 'wb', 'wq', 'wk', 'wb', 'wn', 'wr'],
-  ['wp', 'wp', 'wp', 'wp', 'wp', 'wp', 'wp', 'wp'],
-  ['', '', '', '', '', '', '', ''],
-  ['', '', '', '', '', '', '', ''],
-  ['', '', '', '', '', '', '', ''],
-  ['', '', '', '', '', '', '', ''],
-  ['bp', 'bp', 'bp', 'bp', 'bp', 'bp', 'bp', 'bp'],
-  ['br', 'bn', 'bb', 'bq', 'bk', 'bb', 'bn', 'br'],
-]
 
-function showPossibleMoves(pieceClickObject: pieceClickObjectType) {
-  switch (pieceClickObject.class) {
-    case 'bp': { // Black pawn
-    }
-      break;
-    case 'bk': { // Black king
-    }
-      break;
-    case 'bq': { // Black queen
-    }
-      break;
-    case 'br': { // Black rook
-    }
-      break;
-    case 'bb': { // Black bishop
-    }
-      break;
-    case 'bn': { // Black knight
-      // Få tillbaks alla möjliga drag i koordinater
-      knightSquares({class: pieceClickObject.class, coordinates: pieceClickObject.coordinates}, chessboard)
+function handlePieceClick() {
+  const targetSquares = showPossibleMoves(props)
 
-      // Gör så att alla rutor med dessa koordinater markeras
-
-    }
-      
-      break;
-    case 'wp': { // White pawn
-    }
-      break;
-    case 'wk': { // White king
-    }
-      break;
-    case 'wq': { // White queen
-    }
-      break;
-    case 'wr': { // White rook
-    }
-      break;
-    case 'wb': { // White bishop
-    }
-      break;
-    case 'wn': { // White knight
-    }
-      break;  
+  if (targetSquares.length > 0) {
+    possibleSquares.value = targetSquares
   }
 }
 
-function handlePieceClick(pieceClickObject: pieceClickObjectType) {
-  showPossibleMoves(pieceClickObject)
-}
 
+function showPossibleMoves(piece: Piece) : Array<Coordinates> {
+  let pieceClass = piece.class.split('')[1]
+
+  switch (pieceClass) {
+    case 'p': { // Pawn
+    }
+      break;
+    case 'k': { // King
+    }
+      break;
+    case 'q': { // Queen
+    }
+      break;
+    case 'r': { // Rook
+    }
+      break;
+    case 'b': { // Bishop
+    }
+      break;
+    case 'n': { // Knight
+      return knightSquares(piece, toValue(chessBoard))  
+    }
+  }
+}
 </script>
 
-<style scoped></style>
+<template>
+  <BlackPawn
+    v-if="props.class === 'bp'"
+    @click="handlePieceClick"
+  />
+  <BlackKing
+    v-if="props.class === 'bk'"
+    @click="handlePieceClick"
+  />
+  <BlackQueen
+    v-if="props.class === 'bq'"
+    @click="handlePieceClick"
+  />
+  <BlackKnight
+    v-if="props.class === 'bn'"
+    @click="handlePieceClick"
+  />
+  <BlackRook
+    v-if="props.class === 'br'"
+    @click="handlePieceClick"
+  />
+  <BlackBishop
+    v-if="props.class === 'bb'"
+    @click="handlePieceClick"
+  />
+  <WhitePawn
+    v-if="props.class === 'wp'"
+    @click="handlePieceClick"
+  />
+  <WhiteKnight
+    v-if="props.class === 'wn'"
+    @click="handlePieceClick"
+  />
+  <WhiteKing
+    v-if="props.class === 'wk'"
+    @click="handlePieceClick"
+  />
+  <WhiteQueen
+    v-if="props.class === 'wq'"
+    @click="handlePieceClick"
+  />
+  <WhiteRook
+    v-if="props.class === 'wr'"    
+    @click="handlePieceClick"
+  />
+  <WhiteBishop
+    v-if="props.class === 'wb'"
+    @click="handlePieceClick"
+  />
+</template>
+
+<style scoped>
+
+</style>
+
+

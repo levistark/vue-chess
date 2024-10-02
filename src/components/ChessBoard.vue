@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import { ref, onMounted, useTemplateRef } from 'vue'
+import { onMounted, useTemplateRef, reactive } from 'vue'
 import type { Square, Coordinates } from '../types'
 import ChessSquare from './ChessSquare.vue'
-import ChessPiece from './ChessPiece.vue'
-
-const chessboard = ref<Square[][]>([[]])
+import { chessBoard } from '../stores'
 
 const initialBoard = [
   ['wr', 'wn', 'wb', 'wq', 'wk', 'wb', 'wn', 'wr'],
@@ -16,6 +14,7 @@ const initialBoard = [
   ['bp', 'bp', 'bp', 'bp', 'bp', 'bp', 'bp', 'bp'],
   ['br', 'bn', 'bb', 'bq', 'bk', 'bb', 'bn', 'br'],
 ]
+const rotatedInitialBoard = initialBoard[0].map((val, index) => initialBoard.map((row) => row[index]).reverse())
 
 function createSquares(): Square[] {
   const columns = [0, 1, 2, 3, 4, 5, 6, 7]
@@ -26,7 +25,7 @@ function createSquares(): Square[] {
     let ids: Array<string> = []
 
     const columnLetters = columns.map((column, index) => {
-      return String.fromCharCode(65 + index)
+      return String.fromCharCode(72 - index)
     })
 
     const rowNumbers = rows.map((row, index) => {
@@ -39,16 +38,16 @@ function createSquares(): Square[] {
         ids.push(id)
       })
     })
-    return ids
+    return ids.reverse()
   }
 
   function getCoordinates() {
     const coordinates: Array<Coordinates> = []
-    rows.forEach((row, rowIndex) => {
-      columns.forEach((column, columnIndex) => {
-        coordinates.push([rowIndex, columnIndex])
-      })
-    })
+    for (let i = 0; i < 8; i++) {  // Start from 7 and go down to 0
+      for (let j = 0; j < 8; j++) {
+        coordinates.push([i, j])
+      }
+    }
     return coordinates
   }
 
@@ -60,15 +59,15 @@ function createSquares(): Square[] {
         // For every other row
         if (rowIndex % 2 === 0) {
           if (columnIndex % 2 === 0) {
-            colorArray.push(false)
-          } else {
             colorArray.push(true)
+          } else {
+            colorArray.push(false)
           }
         } else {
           if (columnIndex % 2 === 0) {
-            colorArray.push(true)
-          } else {
             colorArray.push(false)
+          } else {
+            colorArray.push(true)
           }
         }
       })
@@ -96,6 +95,7 @@ function createSquares(): Square[] {
     square.isWhite = colors[i]
     square.currentPiece!.class = ''  
 
+    
     squares.push(square)
   }
 
@@ -103,7 +103,7 @@ function createSquares(): Square[] {
 }
 
 function createChessBoard() {
-  let matrix = new Array(8)
+  let matrix = reactive(new Array(8))
   const chessSquares = createSquares()
 
   for (let i = 0; i < 8; i++) {
@@ -121,27 +121,23 @@ function createChessBoard() {
   for (let i = 0; i < 8; i++) {
     for (let j = 0; j < 8; j++) {
       let coordinates: Coordinates = [i, j]
-      let square = chessSquares.find((i) => arraysEqual(i.squareCoordinates, coordinates))
+      let square = chessSquares.find((s) => arraysEqual(s.squareCoordinates, coordinates))
 
       if (square) {
         matrix[i][j] = {
           isWhite: square.isWhite,
-          squareCoordinates: square.squareCoordinates,
+          squareCoordinates: coordinates, 
           squareId: square.squareId,
           currentPiece: {
-            class: initialBoard[i][j],
-            coordinates: square.squareCoordinates
+            class: rotatedInitialBoard[i][j],
+            coordinates: coordinates
           }
         }
-        
-      } else {
-        throw new Error('Square info was not found')
       }
     }
   }
 
-  let rotatedMatrix = matrix[0].map((val: Square[], index: number) => matrix.map((row) => row[index]).reverse())
-  chessboard.value = rotatedMatrix
+  chessBoard.value = matrix
 }
 
 const squares = useTemplateRef('squares')
@@ -150,12 +146,11 @@ onMounted(() => {
   createChessBoard()
 })
 
-
 </script>
 
 <template>
   <div class="chess-board">
-    <div class="square" v-for="(row, index) in chessboard" :key="index">
+    <div class="square" v-for="(row, index) in chessBoard" :key="index">
       <ChessSquare
         v-for="(square, index) in row"
         :key="index"
@@ -164,9 +159,7 @@ onMounted(() => {
         :square-id="square.squareId"
         :current-piece="square.currentPiece"
         ref="squares"
-      >
-        <ChessPiece :class="square.currentPiece.class" :coordinates="square.currentPiece.coordinates" />
-      </ChessSquare>
+      />
     </div>
   </div>
 </template>

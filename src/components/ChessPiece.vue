@@ -13,7 +13,7 @@ import BlackKing from './Pieces/BlackKing.vue'
 import BlackRook from './Pieces/BlackRook.vue'
 import BlackBishop from './Pieces/BlackBishop.vue'
 import BlackKnight from './Pieces/BlackKnight.vue'
-import { knightSquares } from './pieceLogic'
+import { knightSquares, pawnSquares } from './pieceLogic'
 import { chessBoard, possibleSquares } from '../stores'
 
 const props = defineProps<Piece>()
@@ -33,8 +33,8 @@ function showPossibleMoves(piece: Piece) : Array<Coordinates> {
 
   switch (pieceClass) {
     case 'p': { // Pawn
+      return pawnSquares(piece, toValue(chessBoard))
     }
-      break;
     case 'k': { // King
     }
       break;

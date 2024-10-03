@@ -1,13 +1,5 @@
 import type { ChessBoard, Coordinates, Piece } from '@/types'
-export function movePiece(toCoordinate: Coordinates) {}
-
-export function isWhiteToMove(): boolean {
-  return false
-}
-
-export function isKingInCheck(): boolean {
-  return false
-}
+import { isWhiteToMove, isKingInCheck } from '@/stores'
 
 function trimArray(
   array: Array<Coordinates>,
@@ -29,97 +21,163 @@ function isFirstPawnMove(piece: Piece): boolean {
   }
 }
 
-function checkPawnCaptures(piece: Piece , chessBoard: ChessBoard): Array<Coordinates> {
+export function getPawnSquares(piece: Piece, chessBoard: ChessBoard): Array<Coordinates> {
+  const possibleSquares: Array<Coordinates> = []
+  let calculatedCoordinates: Array<Coordinates> = []
+  const isWhite = piece.class.includes('w')
+  const isFirstMove = isFirstPawnMove(piece)
+  const availableCaptures = getPawnCaptures(piece, chessBoard)
+  
+  // If  turn is correct
+  if ((isWhiteToMove.value && isWhite) || (!isWhiteToMove.value && !isWhite)) {
+    const x = piece.coordinates[0]
+    const y = piece.coordinates[1]
+
+    // If white
+    if (isFirstMove && isWhite) {
+      calculatedCoordinates = [
+        [x, y-1], [x, y-2]
+      ]
+    } else if (isWhite) {
+      calculatedCoordinates = [
+        [x, y-1]
+      ]
+    }
+
+    // If black
+    if (isFirstMove && !isWhite) {
+      calculatedCoordinates = [
+        [x, y+1], [x, y+2]
+      ]
+    } else if (!isWhite) {
+      calculatedCoordinates = [
+        [x, y+1]
+      ]
+    }
+
+    if (isKingInCheck.value) {
+      // Check if it is possible to block/capture with pawn
+      // ...
+    } else {
+      // Add squares if they do not have blocking pieces of either color
+      calculatedCoordinates.forEach((c) => {
+        if (chessBoard[c[0]][c[1]].currentPiece.class.split('').length === 0) {
+          possibleSquares.push(c)
+        }
+      })
+    }
+  }
+
+  const allMoves = [...possibleSquares, ...availableCaptures]
+  return allMoves 
+}
+
+function getPawnCaptures(piece: Piece , chessBoard: ChessBoard): Array<Coordinates> {
   const availableCaptures: Array<Coordinates> = []
   const isWhite = piece.class.split('')[0].includes('w')
   const c = piece.coordinates
 
   if (isWhite) {
-    const upperLeftC = [c[0]-1, c[1]-1]
-    const upperRightC = [c[0]+1, c[1]-1]
+    let upperLeftC: any[] = []
+    let upperRightC: any[] = []
     
-    // Om brädet innehåller en svart pjäs vid den övre vänstra/högra rutan
-    if (chessBoard[upperLeftC[0]][upperLeftC[1]].currentPiece.class.includes('b')) {
-      availableCaptures.push(upperLeftC as Coordinates)
-    } else if (chessBoard[upperRightC[0]][upperRightC[1]].currentPiece.class.includes('b')) {
-      // FORTSÄTT HÄR
+    if (c[0] > 0) upperLeftC = [c[0]-1, c[1]-1]
+    if (c[0] < 7) upperRightC = [c[0]+1, c[1]-1]    
+
+    if (upperLeftC.length > 0) {
+      // Om rutan uppe i vänstra/högra övre hörnet innehåller en svart pjäs
+      if (chessBoard[upperLeftC[0]][upperLeftC[1]].currentPiece.class.includes('b')) 
+        availableCaptures.push(upperLeftC as Coordinates)  
     }
+    if (upperRightC.length > 0) {
+      if (chessBoard[upperRightC[0]][upperRightC[1]].currentPiece.class.includes('b')) 
+        availableCaptures.push(upperRightC as Coordinates)
+    }    
   } else {
-    // FORSÄTT SEDAN MED SVARTS LOGIK
+    let lowerLeftC: any[] = []
+    let lowerRightC: any[] = []
+    
+    if (c[0] > 0) lowerLeftC = [c[0]-1, c[1]+1]
+    if (c[0] < 7) lowerRightC = [c[0]+1, c[1]+1]
+
+    if (lowerLeftC.length > 0) {
+      // Om rutan i vänstra/högra nedre hörnet innehåller en vit pjäs 
+      if (chessBoard[lowerLeftC[0]][lowerLeftC[1]].currentPiece.class.includes('w'))
+        availableCaptures.push(lowerLeftC as Coordinates)
+    }
+    
+    if (lowerRightC.length > 0) {
+      if (chessBoard[lowerRightC[0]][lowerRightC[1]].currentPiece.class.includes('w')) 
+        availableCaptures.push(lowerRightC as Coordinates)
+    }
   }
-  
-  
   return availableCaptures
 }
 
-export function pawnSquares(piece: Piece, chessBoard: ChessBoard): Array<Coordinates> {
+
+
+export function getBishopSquares(piece: Piece, chessBoard: ChessBoard): Array<Coordinates> {
   const possibleSquares: Array<Coordinates> = []
-  const whiteToMove = isWhiteToMove()
-  const kingInCheck = isKingInCheck()
   const isWhite = piece.class.includes('w')
-  const isFirstMove = isFirstPawnMove(piece)
-  const canCapturePiece = checkPawnCaptures(piece, chessBoard)
 
-  if ((whiteToMove && isWhite) || (!whiteToMove && !isWhite)) {
-    let y = piece.coordinates[0]
-    let x = piece.coordinates[1]
-    
-    if (isFirstMove && isWhite) 
-      y -= 2 
-    else if (isWhite)
-      y -= 1
+  const availableCaptures: Array<Coordinates> = []
 
-    if (isFirstMove && !isWhite) 
-      y += 2
-    else if (!isWhite)
-      y += 1
+  if ((isWhiteToMove.value && isWhite) || (!isWhiteToMove.value && !isWhite)) {
+    //
+    const y = piece.coordinates[0]
+    const x = piece.coordinates[1]
+    const calculatedCoordinates: Array<Coordinates> = []
 
-    if (canCapturePiece)
+    if (isWhite) {
+      // Upper left
+      for (let i = 0; i < 8 - x; i++) {
+        calculatedCoordinates.push([x-i, y-i])
+      }
 
+      // Upper right
+      for (let i = 0; i < 8 - x; i++) {
+        calculatedCoordinates.push([x+i, y-i])
+      }
 
-    // let calculatedCoordinates: Array<Coordinates> = []
+      // Lower right
+      for (let i = 0; i < 8 - y; i++) {
+        calculatedCoordinates.push([x+i, y+i])
+      }
 
-    // if (isWhite) {
-    //   calculatedCoordinates = [
-    //     [x, y-1]
-    //   ]
-    // }
-    // const limitedCoordinates = trimArray(calculatedCoordinates, 0, 8)
-
-    // if (kingInCheck) {
-    //   // Check if it is possible to block check with knight
-    // } else {
-    //   // Add squares if they are not the same color as the players turn
-    //   // And if it is included in the allSquares array,
-    //   limitedCoordinates.forEach((c) => {
-    //     if (isWhite) {
-    //       if (!chessBoard[c[0]][c[1]].currentPiece.class.includes('w')) {
-    //         possibleSquares.push(c)
-    //       }
-    //     } else {
-    //       if (!chessBoard[c[0]][c[1]].currentPiece.class.includes('b')) {
-    //         possibleSquares.push(c)
-    //       }
-    //     }
-    //   })
-    // }
-
-    if (isFirstMove) {
-      // Check if first move and change available squares
+      // Lower left
+      for (let i = 0; i < 8 - y; i++) {
+        calculatedCoordinates.push([x-i, y+i])
+      }
+      
+      console.log(calculatedCoordinates.length) // loggar ut 14, varför?
+      
+    } else {
+      //
     }
+
+
+
+    const limitedCoordinates = trimArray(calculatedCoordinates, 0, 8)
   }
 
   return possibleSquares
 }
 
-export function knightSquares(piece: Piece, chessBoard: ChessBoard): Array<Coordinates> {
+function getBishopCaptures(piece: Piece, chessBoard: ChessBoard) : Array<Coordinates> {
+  const availableCaptures: Array<Coordinates> = []
+  return availableCaptures
+}
+
+
+
+
+
+export function getKnightSquares(piece: Piece, chessBoard: ChessBoard): Array<Coordinates> {
   const possibleSquares: Array<Coordinates> = []
-  const whiteToMove = isWhiteToMove()
-  const kingInCheck = isKingInCheck()
   const isWhite = piece.class.includes('w')
 
   // If turn is correct
-  if ((whiteToMove && isWhite) || (!whiteToMove && !isWhite)) {
+  if ((isWhiteToMove.value && isWhite) || (!isWhiteToMove.value && !isWhite)) {
     const y = piece.coordinates[0]
     const x = piece.coordinates[1]
     const calculatedCoordinates: Array<Coordinates> = [
@@ -134,8 +192,9 @@ export function knightSquares(piece: Piece, chessBoard: ChessBoard): Array<Coord
     ]
     const limitedCoordinates = trimArray(calculatedCoordinates, 0, 8)
 
-    if (kingInCheck) {
-      // Check if it is possible to block check with knight
+    if (isKingInCheck.value) {
+      // Check if it is possible to block/capture with knight
+      // ...
     } else {
       // Add squares if they are not the same color as the players turn
       // And if it is included in the allSquares array,
@@ -152,6 +211,5 @@ export function knightSquares(piece: Piece, chessBoard: ChessBoard): Array<Coord
       })
     }
   }
-
   return possibleSquares
 }

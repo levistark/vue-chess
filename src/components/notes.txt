@@ -220,3 +220,35 @@ piece is selected (clicked)
     else deselect piece
 
 
+
+
+trigga drag
+  kör logik
+    uppdatera bräd-state
+
+
+den ska inte markera rutan om den klassas som possible
+
+
+om possibleSquares inte är tomma så ska rutan inte markeras
+
+
+
+för tornet:
+  om den första blockerande pjäsen är av motsatt färg
+    lägg till i captures
+
+  
+
+
+  lägg till så många rutor till vänster så som x är
+
+  så om 
+
+  
+  for (i; i<8; i++) {
+      let coordinates = [
+        [i]
+      ]
+  }
+  x-1 y-1

@@ -18,11 +18,11 @@
 import { computed, defineProps } from 'vue'
 import type { Square } from '../types'
 import ChessPiece from './ChessPiece.vue'
-import { possibleSquares, selectedSquare } from '@/stores'
+import { chessBoard, possibleSquares, selectedSquare, movePiece } from '@/stores'
 
 const props = defineProps<Square>()
 
-const isSelected = computed(() => selectedSquare.value === props.squareCoordinates)
+const isSelected = computed(() => selectedSquare.value?.squareCoordinates === props.squareCoordinates)
 
 const isPossibleSquare = computed(() => {
   if (possibleSquares.value.length > 0) {
@@ -38,7 +38,22 @@ const isPossibleSquare = computed(() => {
 })
 
 function handleClick() {
-  selectedSquare.value = props.squareCoordinates
+  if (isPossibleSquare.value) {
+    const toSquare = props
+
+    if (selectedSquare.value && selectedSquare.value.currentPiece.class !== '') {
+      movePiece(selectedSquare.value, toSquare)
+    }
+    // console.log(chessBoard.value[toSquare.squareCoordinates[0]][toSquare.squareCoordinates[1]].currentPiece.class)
+    return 
+  } 
+  
+  if (possibleSquares.value.length > 0) {
+    selectedSquare.value = undefined
+    possibleSquares.value = []
+    return
+  } 
+    selectedSquare.value = props
 }
 </script>
 

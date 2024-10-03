@@ -1,23 +1,29 @@
 @import './base.css';
 
-a,
-.green {
-  text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
-  padding: 3px;
-}
-
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
-}
-
 div {
   margin: 0;
   padding: 0;
 }
 .hidden {
   display: none;
+}
+
+:root {
+  --white: rgb(249, 249, 249);
+}
+
+button {
+  transition: all 0.3s;
+  outline: none;
+  padding: 1rem;
+  border: 0;
+  border-radius: 10px;
+  cursor: pointer;
+  background-color: var(--white);
+  color: black;
+
+  &:hover {
+    background-color: rgba(89, 89, 89, 0.508);
+    color: var(--white);
+  }
 }

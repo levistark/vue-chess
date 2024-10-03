@@ -13,11 +13,10 @@ import BlackKing from './Pieces/BlackKing.vue'
 import BlackRook from './Pieces/BlackRook.vue'
 import BlackBishop from './Pieces/BlackBishop.vue'
 import BlackKnight from './Pieces/BlackKnight.vue'
-import { knightSquares, pawnSquares } from './pieceLogic'
-import { chessBoard, possibleSquares } from '../stores'
+import { getBishopSquares, getKnightSquares, getPawnSquares } from './pieceLogic'
+import { chessBoard, possibleSquares, selectedSquare } from '../stores'
 
 const props = defineProps<Piece>()
-
 
 function handlePieceClick() {
   const targetSquares = showPossibleMoves(props)
@@ -25,32 +24,35 @@ function handlePieceClick() {
   if (targetSquares.length > 0) {
     possibleSquares.value = targetSquares
   }
+
+  selectedSquare.value = chessBoard.value[props.coordinates[0]][props.coordinates[1]]
 }
 
 
 function showPossibleMoves(piece: Piece) : Array<Coordinates> {
   let pieceClass = piece.class.split('')[1]
+  let possibleMoves: Array<Coordinates> = []
 
   switch (pieceClass) {
     case 'p': { // Pawn
-      return pawnSquares(piece, toValue(chessBoard))
+      possibleMoves = getPawnSquares(piece, toValue(chessBoard))
     }
-    case 'k': { // King
-    }
-      break;
-    case 'q': { // Queen
-    }
-      break;
-    case 'r': { // Rook
-    }
-      break;
+    break;
+    // case 'k': { // King
+    // }
+    // case 'q': { // Queen
+    // }
+    // case 'r': { // Rook
+    // }
     case 'b': { // Bishop
+      possibleMoves = getBishopSquares(piece, toValue(chessBoard))
     }
-      break;
+    break;
     case 'n': { // Knight
-      return knightSquares(piece, toValue(chessBoard))  
+      possibleMoves = getKnightSquares(piece, toValue(chessBoard))  
     }
   }
+  return possibleMoves
 }
 </script>
 

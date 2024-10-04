@@ -1,46 +1,21 @@
 # vue-chess
 
-This template should help get you started developing with Vue 3 in Vite.
+This was a fun test project to try to render a chessboard with chess pieces, as well as adding some basic move-logic for each of the pieces. It taught me alot about how Vue handles rendering and some ways to manage state handling in Vue. 
 
-## Recommended IDE Setup
-
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
-
-## Type Support for `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+There are a lot more still to be done overall. Here are some things on my to-do list: 
+* Add logic for check-mechanism
+* Add logic for check-mate
+* Add logic for castling
+* Add logic for the 'En Passant' rule
+* Add logic for stale-mate
+* Add UI that displays captured pieces and score balance
+* etc.
 
 ## Project Setup
 
 ```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
+git clone URL
+cd vue-chess
+npm install (ONLY IF FIRST TIME)
 npm run dev
 ```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Run Unit Tests with [Vitest](https://vitest.dev/)
-
-```sh
-npm run test:unit
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
-# vue-chess

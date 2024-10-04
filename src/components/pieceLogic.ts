@@ -1,16 +1,6 @@
 import type { ChessBoard, Coordinates, Piece } from '@/types'
 import { isWhiteToMove, isKingInCheck } from '@/stores'
 
-function trimArray(
-  array: Array<Coordinates>,
-  lowestValue: number,
-  highestValue: number
-): Array<Coordinates> {
-  return array.filter(
-    (c) => c[0] < highestValue && c[0] >= lowestValue && c[1] < highestValue && c[1] >= lowestValue
-  )
-}
-
 function isFirstPawnMove(piece: Piece): boolean {
   if (piece.class.split('')[0] === 'w' && piece.coordinates[1] === 6) {
     return true
@@ -114,8 +104,6 @@ function getPawnCaptures(piece: Piece , chessBoard: ChessBoard): Array<Coordinat
   return availableCaptures
 }
 
-
-
 export function getBishopSquares(piece: Piece, chessBoard: ChessBoard): Array<Coordinates> {
   const possibleSquares: Array<Coordinates> = []
   const isWhite = piece.class.includes('w')
@@ -123,56 +111,266 @@ export function getBishopSquares(piece: Piece, chessBoard: ChessBoard): Array<Co
   if ((isWhiteToMove.value && isWhite) || (!isWhiteToMove.value && !isWhite)) {
     const x = piece.coordinates[0]
     const y = piece.coordinates[1]
-    const calculatedCoordinates: Array<Coordinates> = []
     const n = 8
-
+    const color = isWhite ? 'w' : 'b'
     // Upper left
-    for (let i = 0; i < (x > y ? y : x+1); i++) {
-      calculatedCoordinates.push([x-i, y-i])
-      if (chessBoard[x-i][y-i].currentPiece.class !== '') chessBoard[x-i][y-i].currentPiece.class
+    for (let i = 1; i < (x > y ? y+1 : x+1); i++) {
+      const c: Coordinates = [x-i, y-i]
+
+      // Not letting coordinates with same color pieces or out of bounds in
+      if (c[0] >= 0 && c[0] < 8 && c[1] >= 0 && c[1] < 8) {
+        if (chessBoard[c[0]][c[1]].currentPiece.class.split('')[0] !== color) {
+          possibleSquares.push(c)
+        }
+        if (chessBoard[c[0]][c[1]].currentPiece.class !== '') i = n
+      }
     }
 
     // Upper right
-    for (let i = 0; i < (y > n-x ? n-x : y); i++) {
-      calculatedCoordinates.push([x+i, y-i])
-      if (chessBoard[x+i][y-i].currentPiece.class !== '') i = n
+    for (let i = 1; i < (y > n-x ? n-x : y+1); i++) {
+      const c: Coordinates = [x+i, y-i]
+
+      // Not letting coordinates with same color pieces or out of bounds in
+      if (c[0] >= 0 && c[0] < 8 && c[1] >= 0 && c[1] < 8) {
+        if (chessBoard[c[0]][c[1]].currentPiece.class.split('')[0] !== color) {
+          possibleSquares.push(c)
+        }
+        if (chessBoard[c[0]][c[1]].currentPiece.class !== '') i = n
+      }
     }
 
     // Lower right
-    for (let i = 0; i < (n-x > n-y ? n-y : n-x); i++) {
-      calculatedCoordinates.push([x+i, y+i])
-      if (chessBoard[x+i][y+i].currentPiece.class !== '') i = n
+    for (let i = 1; i < (n-x > n-y ? n-y : n-x); i++) {
+      const c: Coordinates = [x+i, y+i]
+
+      // Not letting coordinates with same color pieces or out of bounds in
+      if (c[0] >= 0 && c[0] < 8 && c[1] >= 0 && c[1] < 8) {
+        if (chessBoard[c[0]][c[1]].currentPiece.class.split('')[0] !== color) {
+          possibleSquares.push(c)
+        }
+        if (chessBoard[c[0]][c[1]].currentPiece.class !== '') i = n
+      }
     }
 
     // Lower left
-    for (let i = 0; i < (x > n-y ? n-y : x+1); i++) {
-      calculatedCoordinates.push([x-i, y+i])
-      if (chessBoard[x-i][y+i].currentPiece.class !== '') chessBoard[x-i][y-i].currentPiece.class
-    }
-    
-    const color = isWhite ? 'w' : 'b'
+    for (let i = 1; i < (x > n-y ? n-y : x+1); i++) {
+      const c: Coordinates = [x-i, y+i]
 
-    calculatedCoordinates.forEach((c) => {
-      if (!chessBoard[c[0]][c[1]].currentPiece.class.includes(color)) {
-        possibleSquares.push(c)
+      // Not letting coordinates with same color pieces or out of bounds in
+      if (c[0] >= 0 && c[0] < 8 && c[1] >= 0 && c[1] < 8) {
+        if (chessBoard[c[0]][c[1]].currentPiece.class.split('')[0] !== color) {
+          possibleSquares.push(c)
+        }
+        if (chessBoard[c[0]][c[1]].currentPiece.class !== '') i = n
       }
-    })
-
-    console.log(calculatedCoordinates.length)
-    console.log(possibleSquares.length)
+    }
   }
 
   return possibleSquares
 }
 
-function getBishopCaptures(piece: Piece, chessBoard: ChessBoard) : Array<Coordinates> {
-  const availableCaptures: Array<Coordinates> = []
-  return availableCaptures
+export function getRookSquares(piece: Piece, chessBoard: ChessBoard) : Array<Coordinates> {
+  const possibleSquares: Array<Coordinates> = []
+  const isWhite = piece.class.includes('w')
+
+  if ((isWhiteToMove.value && isWhite) || (!isWhiteToMove.value && !isWhite)) {
+    const x = piece.coordinates[0]
+    const y = piece.coordinates[1]
+    const n = 8
+    const color = isWhite ? 'w' : 'b'
+
+    // Up
+    for (let i = 1; i < y+1; i++) {
+      const c: Coordinates = [x, y-i]
+
+      // Not letting coordinates with same color pieces or out of bounds in
+      if (c[0] >= 0 && c[0] < 8 && c[1] >= 0 && c[1] < 8) {
+        if (chessBoard[c[0]][c[1]].currentPiece.class.split('')[0] !== color) {
+          possibleSquares.push(c)
+        }
+        if (chessBoard[c[0]][c[1]].currentPiece.class !== '') i = n
+      }
+    }
+
+    // Right
+    for (let i = 1; i < n-x; i++) {
+      const c: Coordinates = [x+i, y]
+
+      // Not letting coordinates with same color pieces or out of bounds in
+      if (c[0] >= 0 && c[0] < 8 && c[1] >= 0 && c[1] < 8) {
+        if (chessBoard[c[0]][c[1]].currentPiece.class.split('')[0] !== color) {
+          possibleSquares.push(c)
+        }
+        if (chessBoard[c[0]][c[1]].currentPiece.class !== '') i = n
+      }
+    }
+    
+    // Down
+    for (let i = 1; i < n-y; i++) {
+      const c: Coordinates = [x, y+i]
+
+      // Not letting coordinates with same color pieces or out of bounds in
+      if (c[0] >= 0 && c[0] < 8 && c[1] >= 0 && c[1] < 8) {
+        if (chessBoard[c[0]][c[1]].currentPiece.class.split('')[0] !== color) {
+          possibleSquares.push(c)
+        }
+        if (chessBoard[c[0]][c[1]].currentPiece.class !== '') i = n
+      }
+    }
+
+    // Left
+    for (let i = 1; i < x+1; i++) {
+      const c: Coordinates = [x-i, y]
+
+      // Not letting coordinates with same color pieces or out of bounds in
+      if (c[0] >= 0 && c[0] < 8 && c[1] >= 0 && c[1] < 8) {
+        if (chessBoard[c[0]][c[1]].currentPiece.class.split('')[0] !== color) {
+          possibleSquares.push(c)
+        }
+        if (chessBoard[c[0]][c[1]].currentPiece.class !== '') i = n
+      }
+    }
+  }
+  return possibleSquares
 }
 
+export function getQueenSquares(piece: Piece, chessBoard: ChessBoard) : Array<Coordinates> {
+  const possibleSquares: Array<Coordinates> = []
+  const isWhite = piece.class.includes('w')
 
+  if ((isWhiteToMove.value && isWhite) || (!isWhiteToMove.value && !isWhite)) {
+    const x = piece.coordinates[0]
+    const y = piece.coordinates[1]
+    const n = 8
+    const color = piece.class.split('')[0]
 
+    // Up
+    for (let i = 1; i < y+1; i++) {
+      const c: Coordinates = [x, y-i]
 
+      // Not letting coordinates with same color pieces or out of bounds in
+      if (c[0] >= 0 && c[0] < 8 && c[1] >= 0 && c[1] < 8) {
+        if (chessBoard[c[0]][c[1]].currentPiece.class.split('')[0] !== color) {
+          possibleSquares.push(c)
+        }
+        if (chessBoard[c[0]][c[1]].currentPiece.class !== '') i = n
+      }
+    }
+
+    // Right
+    for (let i = 1; i < n-x; i++) {
+      const c: Coordinates = [x+i, y]
+      
+      // Not letting coordinates with same color pieces or out of bounds in
+      if (c[0] >= 0 && c[0] < 8 && c[1] >= 0 && c[1] < 8) {
+        if (chessBoard[c[0]][c[1]].currentPiece.class.split('')[0] !== color) {
+          possibleSquares.push(c)
+        }
+        if (chessBoard[c[0]][c[1]].currentPiece.class !== '') i = n
+      }
+    }
+    
+    // Down
+    for (let i = 1; i < n-y; i++) {
+      const c: Coordinates = [x, y+i]
+      
+      if (c[0] >= 0 && c[0] < 8 && c[1] >= 0 && c[1] < 8) {
+        if (chessBoard[c[0]][c[1]].currentPiece.class.split('')[0] !== color) {
+          possibleSquares.push(c)
+        }
+        if (chessBoard[c[0]][c[1]].currentPiece.class !== '') i = n
+      }
+    }
+
+    // Left
+    for (let i = 1; i < x+1; i++) {
+      const c: Coordinates = [x-i, y]
+      
+      if (c[0] >= 0 && c[0] < 8 && c[1] >= 0 && c[1] < 8) {
+        if (chessBoard[c[0]][c[1]].currentPiece.class.split('')[0] !== color) {
+          possibleSquares.push(c)
+        }
+        if (chessBoard[c[0]][c[1]].currentPiece.class !== '') i = n
+      }
+    }
+
+    // Upper left
+    for (let i = 1; i < (x > y ? y+1 : x+1); i++) {
+      const c: Coordinates = [x-i, y-i]
+      
+      if (c[0] >= 0 && c[0] < 8 && c[1] >= 0 && c[1] < 8) {
+        if (chessBoard[c[0]][c[1]].currentPiece.class.split('')[0] !== color) {
+          possibleSquares.push(c)
+        }
+        if (chessBoard[c[0]][c[1]].currentPiece.class !== '') i = n
+      }
+    }
+
+    // Upper right
+    for (let i = 1; i < (y > n-x ? n-x : y+1); i++) {
+      const c: Coordinates = [x+i, y-i]
+      
+      if (c[0] >= 0 && c[0] < 8 && c[1] >= 0 && c[1] < 8) {
+        if (chessBoard[c[0]][c[1]].currentPiece.class.split('')[0] !== color) {
+          possibleSquares.push(c)
+        }
+        if (chessBoard[c[0]][c[1]].currentPiece.class !== '') i = n
+      }
+    }
+
+    // Lower right
+    for (let i = 1; i < (n-x > n-y ? n-y : n-x); i++) {
+      const c: Coordinates = [x+i, y+i]
+      
+      if (c[0] >= 0 && c[0] < 8 && c[1] >= 0 && c[1] < 8) {
+        if (chessBoard[c[0]][c[1]].currentPiece.class.split('')[0] !== color) {
+          possibleSquares.push(c)
+        }
+        if (chessBoard[c[0]][c[1]].currentPiece.class !== '') i = n
+      }
+    }
+
+    // Lower left
+    for (let i = 1; i < (x > n-y ? n-y : x+1); i++) {
+      const c: Coordinates = [x-i, y+i]
+      
+      if (c[0] >= 0 && c[0] < 8 && c[1] >= 0 && c[1] < 8) {
+        if (chessBoard[c[0]][c[1]].currentPiece.class.split('')[0] !== color) {
+          possibleSquares.push(c)
+        }
+        if (chessBoard[c[0]][c[1]].currentPiece.class !== '') i = n
+      }
+    }
+  }
+  return possibleSquares
+}
+
+export function getKingSquares(piece: Piece, chessBoard: ChessBoard) : Array<Coordinates> {
+  const possibleSquares: Array<Coordinates> = []
+  const isWhite = piece.class.includes('w')
+  
+  if ((isWhiteToMove.value && isWhite) || (!isWhiteToMove.value && !isWhite)) {
+    const x = piece.coordinates[0]
+    const y = piece.coordinates[1]
+    const calculatedCoordinates: Array<Coordinates> = [
+      [x-1, y-1], [x, y-1], [x+1, y-1],
+      [x-1, y], [x+1, y],
+      [x-1, y+1], [x, y+1], [x+1, y+1]
+    ]
+
+    const color = isWhite ? 'w' : 'b'
+
+    // Trim array from out-of-bounds and same-color pieces
+    calculatedCoordinates.forEach((c) => {
+      if (c[0] >= 0 && c[0] < 8 && c[1] >= 0 && c[1] < 8) {
+        if (!chessBoard[c[0]][c[1]].currentPiece.class.includes(color)) {
+          possibleSquares.push(c)
+        }
+      }
+    })
+  }
+  return possibleSquares
+}
 
 export function getKnightSquares(piece: Piece, chessBoard: ChessBoard): Array<Coordinates> {
   const possibleSquares: Array<Coordinates> = []
@@ -192,21 +390,18 @@ export function getKnightSquares(piece: Piece, chessBoard: ChessBoard): Array<Co
       [y - 1, x + 2],
       [y - 1, x - 2]
     ]
-    const limitedCoordinates = trimArray(calculatedCoordinates, 0, 8)
 
     if (isKingInCheck.value) {
       // Check if it is possible to block/capture with knight
       // ...
     } else {
-      // Add squares if they are not the same color as the players turn
-      // And if it is included in the allSquares array,
-      limitedCoordinates.forEach((c) => {
-        if (isWhite) {
-          if (!chessBoard[c[0]][c[1]].currentPiece.class.includes('w')) {
-            possibleSquares.push(c)
-          }
-        } else {
-          if (!chessBoard[c[0]][c[1]].currentPiece.class.includes('b')) {
+
+      const color = isWhite ? 'w' : 'b'
+      
+      // Trim array from out-of-bounds and same-color pieces
+      calculatedCoordinates.forEach((c) => {
+        if (c[0] >= 0 && c[0] < 8 && c[1] >= 0 && c[1] < 8) {
+          if (!chessBoard[c[0]][c[1]].currentPiece.class.includes(color)) {
             possibleSquares.push(c)
           }
         }

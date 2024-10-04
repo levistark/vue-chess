@@ -18,7 +18,7 @@
 import { computed, defineProps } from 'vue'
 import type { Square } from '../types'
 import ChessPiece from './ChessPiece.vue'
-import { chessBoard, possibleSquares, selectedSquare, movePiece } from '@/stores'
+import { possibleSquares, selectedSquare, movePiece } from '@/stores'
 
 const props = defineProps<Square>()
 

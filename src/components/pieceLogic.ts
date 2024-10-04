@@ -120,44 +120,46 @@ export function getBishopSquares(piece: Piece, chessBoard: ChessBoard): Array<Co
   const possibleSquares: Array<Coordinates> = []
   const isWhite = piece.class.includes('w')
 
-  const availableCaptures: Array<Coordinates> = []
-
   if ((isWhiteToMove.value && isWhite) || (!isWhiteToMove.value && !isWhite)) {
-    //
-    const y = piece.coordinates[0]
-    const x = piece.coordinates[1]
+    const x = piece.coordinates[0]
+    const y = piece.coordinates[1]
     const calculatedCoordinates: Array<Coordinates> = []
+    const n = 8
 
-    if (isWhite) {
-      // Upper left
-      for (let i = 0; i < 8 - x; i++) {
-        calculatedCoordinates.push([x-i, y-i])
-      }
-
-      // Upper right
-      for (let i = 0; i < 8 - x; i++) {
-        calculatedCoordinates.push([x+i, y-i])
-      }
-
-      // Lower right
-      for (let i = 0; i < 8 - y; i++) {
-        calculatedCoordinates.push([x+i, y+i])
-      }
-
-      // Lower left
-      for (let i = 0; i < 8 - y; i++) {
-        calculatedCoordinates.push([x-i, y+i])
-      }
-      
-      console.log(calculatedCoordinates.length) // loggar ut 14, varför?
-      
-    } else {
-      //
+    // Upper left
+    for (let i = 0; i < (x > y ? y : x+1); i++) {
+      calculatedCoordinates.push([x-i, y-i])
+      if (chessBoard[x-i][y-i].currentPiece.class !== '') chessBoard[x-i][y-i].currentPiece.class
     }
 
+    // Upper right
+    for (let i = 0; i < (y > n-x ? n-x : y); i++) {
+      calculatedCoordinates.push([x+i, y-i])
+      if (chessBoard[x+i][y-i].currentPiece.class !== '') i = n
+    }
 
+    // Lower right
+    for (let i = 0; i < (n-x > n-y ? n-y : n-x); i++) {
+      calculatedCoordinates.push([x+i, y+i])
+      if (chessBoard[x+i][y+i].currentPiece.class !== '') i = n
+    }
 
-    const limitedCoordinates = trimArray(calculatedCoordinates, 0, 8)
+    // Lower left
+    for (let i = 0; i < (x > n-y ? n-y : x+1); i++) {
+      calculatedCoordinates.push([x-i, y+i])
+      if (chessBoard[x-i][y+i].currentPiece.class !== '') chessBoard[x-i][y-i].currentPiece.class
+    }
+    
+    const color = isWhite ? 'w' : 'b'
+
+    calculatedCoordinates.forEach((c) => {
+      if (!chessBoard[c[0]][c[1]].currentPiece.class.includes(color)) {
+        possibleSquares.push(c)
+      }
+    })
+
+    console.log(calculatedCoordinates.length)
+    console.log(possibleSquares.length)
   }
 
   return possibleSquares

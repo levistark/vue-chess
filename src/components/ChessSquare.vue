@@ -44,7 +44,6 @@ function handleClick() {
     if (selectedSquare.value && selectedSquare.value.currentPiece.class !== '') {
       movePiece(selectedSquare.value, toSquare)
     }
-    // console.log(chessBoard.value[toSquare.squareCoordinates[0]][toSquare.squareCoordinates[1]].currentPiece.class)
     return 
   } 
   

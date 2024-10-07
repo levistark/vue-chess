@@ -27,7 +27,23 @@ import ChessInfo from './components/ChessInfo.vue'
 
   .game {
     display: flex;
+    flex-direction: column;
     gap: 2rem
   }
+
+  @media only screen and (min-width: 600px) {
+    /* */
+  }
+
+  @media only screen and (min-width: 768px) {
+    /* CSS rules for medium devices */
+  }
+
+  @media only screen and (min-width: 992px) {
+    .game {
+      flex-direction: row;
+    }
+  }
+  
 }
 </style>

@@ -58,9 +58,9 @@ function handleClick() {
 
 <style scoped>
 .square {
-  width: 70px;
-  height: 70px;
-  padding: 5px;
+  width: 45px;
+  height: 45px;
+  padding: 3px;
   position: relative;
 
   .white {
@@ -84,17 +84,29 @@ function handleClick() {
     display: none;
   }
   .rank {
-    left: 50%;
-    bottom: -50px;
-    z-index: -1;
-  }
-  .file {
-    left: -50px;
-    bottom: 30px;
-    color: white;
+    left: 45%;
+    bottom: -25px;
     z-index: -1;
   }
 
+  @media (min-width: 992px) {
+    .rank {
+      bottom: -50px;
+    } 
+  }
+
+  .file {
+    color: white;
+    z-index: -1;
+    left: -20px;
+    bottom: 42%
+  }
+  
+  @media (min-width: 992px) {
+    .file {
+      left: -50px;
+    }
+  }
   .possible {
     position: absolute;
     top: 50%;
@@ -103,8 +115,8 @@ function handleClick() {
     z-index: 0;
 
     .circle {
-      width: 15px;
-      height: 15px;
+      width: 11px;
+      height: 11px;
       background-color: rgb(66, 66, 66);
       border-radius: 50%;
     }
@@ -114,6 +126,29 @@ function handleClick() {
     z-index: 1;
   }
 }
+
+@media (min-width: 600px) {
+  .square {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+@media (min-width: 992px) {
+  .square {
+    width: 70px;
+    height: 70px;
+    padding: 5px;  
+
+    .possible {
+      .circle {
+        width: 15px;
+        height: 15px;
+      }
+    }
+  }
+}
+
 
 .square.selected {
   background-color: rgb(145, 145, 145);

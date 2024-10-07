@@ -168,13 +168,5 @@ onMounted(() => {
 .chess-board {
   display: grid;
   grid-template-columns: repeat(8, 1fr);
-
-  .item {
-    width: 100px;
-    height: 100px;
-    background-color: white;
-    border: 1px solid black;
-    color: black;
-  }
 }
 </style>

@@ -13,7 +13,7 @@ import {isWhiteToMove, isKingInCheck} from '../stores'
     </div>
     <div class="btn-container">
       <button class="btn-resign">Resign</button>
-      <button class="btn-draw">Offer draw</button>
+      <button class="btn-draw">Draw</button>
     </div>
   
   </div>
@@ -23,15 +23,33 @@ import {isWhiteToMove, isKingInCheck} from '../stores'
 <style scoped>
 .game-info {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: space-between;
-  border-left: 1px solid rgb(70, 70, 70);
-  padding-left: 2rem;
+  align-items: center;
+  border-top: 1px solid rgb(70, 70, 70);
+  padding-top: 2rem;
+  margin-top: 2rem;
 
   .btn-container {
     display: flex;
     flex-direction: column;
     gap: 1rem;
+  }
+
+  .turn {
+    max-width: 30%;
+    text-align: center;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  .game-info {
+    flex-direction: column;
+    margin-top: 0;
+    border-top: none;
+    padding-top: 0;
+    border-left: 1px solid rgb(70, 70, 70);
+    padding-left: 2rem;
   }
 }
 </style>
